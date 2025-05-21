@@ -1,0 +1,116 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #111;
+  color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #222;
+  padding: 10px 20px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: gold;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 15px;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.auth-buttons button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #444;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.auth-buttons .registro {
+  background-color: gold;
+  color: #000;
+}
+
+.hero {
+  background-image: url('https://images.unsplash.com/photo-1569946462389-9d64a4cbf7aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+  background-size: cover;
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+}
+
+.cta-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: gold;
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.juegos {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.juego-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.juego {
+  background-color: #333;
+  padding: 20px;
+  border: 2px solid gold;
+  border-radius: 10px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  display: block;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.juego:hover {
+  transform: scale(1.05);
+  background-color: #444;
+}
+
+.promos {
+  background-color: #222;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  background-color: #111;
+  font-size: 0.9rem;
+  color: #aaa;
+}
