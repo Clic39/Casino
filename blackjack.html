@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Blackjack</title>
+  <title>Blackjack con Apuestas</title>
   <style>
     body {
       background-color: #000;
@@ -11,12 +11,15 @@
       text-align: center;
       padding: 20px;
     }
+
     h1 {
       color: #FFD700;
     }
+
     .cards {
       margin: 10px 0;
     }
+
     .card {
       display: inline-block;
       padding: 10px 15px;
@@ -25,23 +28,39 @@
       border: 2px solid #FFD700;
       border-radius: 5px;
       font-size: 20px;
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeInCard 0.4s ease-out forwards;
     }
+
+    @keyframes fadeInCard {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     button, input {
       margin: 10px;
       padding: 10px 15px;
       font-size: 16px;
       border-radius: 5px;
       border: none;
+      transition: background-color 0.3s, transform 0.2s;
     }
+
     button {
       background-color: #FFD700;
       color: black;
       font-weight: bold;
       cursor: pointer;
     }
+
     button:hover {
       background-color: #e6c200;
+      transform: scale(1.05);
     }
+
     input {
       width: 100px;
       text-align: center;
@@ -49,11 +68,15 @@
       color: #FFD700;
       border: 1px solid #FFD700;
     }
+
     #status {
       margin-top: 15px;
       font-size: 1.2em;
       color: #FFA500;
+      opacity: 0;
+      animation: fadeInText 0.5s forwards;
     }
+
     #history {
       margin-top: 20px;
       text-align: left;
@@ -61,6 +84,17 @@
       margin-left: auto;
       margin-right: auto;
       font-size: 0.95em;
+    }
+
+    #history-list li {
+      animation: fadeInText 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInText {
+      to {
+        opacity: 1;
+      }
     }
   </style>
 </head>
@@ -148,12 +182,13 @@
     function displayCards(hand, elementId) {
       const container = document.getElementById(elementId);
       container.innerHTML = '';
-      for (let card of hand) {
+      hand.forEach((card, index) => {
         const cardDiv = document.createElement('div');
         cardDiv.className = 'card';
         cardDiv.textContent = card.value + card.suit;
+        cardDiv.style.animationDelay = `${index * 0.1}s`;
         container.appendChild(cardDiv);
-      }
+      });
     }
 
     function updateUI() {
@@ -208,7 +243,10 @@
     function endGame(message, win) {
       gameOver = true;
       updateUI();
-      document.getElementById("status").textContent = message;
+      const status = document.getElementById("status");
+      status.textContent = message;
+      status.style.animation = 'fadeInText 0.5s ease-out forwards';
+
       const bet = parseInt(document.getElementById('bet').value);
       if (win === true) {
         balance += bet;
