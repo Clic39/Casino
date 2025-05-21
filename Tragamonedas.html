@@ -2,11 +2,148 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Tragamonedas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tragamonedas Interactivo</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
+    header {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      color: #ffcc00;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #222;
+      padding: 10px;
+    }
+    nav a {
+      color: #ffcc00;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .slot-machine {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .reels {
+      font-size: 3rem;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 20px 0;
+    }
+    .reels span {
+      background-color: #000;
+      padding: 15px 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ffcc00;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1.2rem;
+      background-color: #ffcc00;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #e6b800;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      color: #aaa;
+      margin-top: 40px;
+    }
+  </style>
 </head>
-<body style="background-color: #111; color: white; text-align: center; padding: 50px;">
-  <h1>Tragamonedas</h1>
-  <p>Juego en desarrollo...</p>
-  <a href="index.html" style="color: gold;">Volver al inicio</a>
+<body>
+  <header>
+    <h1>Tragamonedas Online</h1>
+  </header>
+
+  <nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#juegos">Juegos</a>
+    <a href="#bonos">Bonos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
+  <div class="container" id="inicio">
+    <div class="slot-machine">
+      <h2>¡Prueba tu suerte!</h2>
+      <div class="reels" id="reels">
+        <span>?</span>
+        <span>?</span>
+        <span>?</span>
+      </div>
+      <button onclick="girar()">Girar</button>
+      <p id="resultado"></p>
+    </div>
+
+    <div class="content">
+      <h3 id="juegos">Juegos Populares</h3>
+      <ul>
+        <li>Starburst</li>
+        <li>Book of Ra</li>
+        <li>Gonzo's Quest</li>
+        <li>Sweet Bonanza</li>
+      </ul>
+
+      <h3 id="bonos">Bonos y Promociones</h3>
+      <p>Regístrate y recibe <strong>100 giros gratis</strong> en tu primer depósito.</p>
+
+      <h3 id="contacto">Contáctanos</h3>
+      <p>Email: contacto@tragamonedasonline.com</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Tragamonedas Online. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    const simbolos = ["🍒", "🍋", "🔔", "⭐", "💎", "7️⃣"];
+
+    function girar() {
+      const reels = document.getElementById("reels").children;
+      let resultado = [];
+
+      for (let i = 0; i < reels.length; i++) {
+        const simbolo = simbolos[Math.floor(Math.random() * simbolos.length)];
+        reels[i].textContent = simbolo;
+        resultado.push(simbolo);
+      }
+
+      const mensaje = document.getElementById("resultado");
+      if (resultado.every((s) => s === resultado[0])) {
+        mensaje.textContent = "¡Jackpot! ¡Tres iguales!";
+      } else {
+        mensaje.textContent = "Sigue intentando...";
+      }
+    }
+  </script>
 </body>
 </html>
