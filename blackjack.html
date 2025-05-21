@@ -2,11 +2,182 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Blackjack</title>
+  <title>Blackjack Interactivo</title>
+  <style>
+    body {
+      background-color: #2b2b2b;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ff99;
+    }
+    .cards {
+      margin: 10px 0;
+    }
+    .card {
+      display: inline-block;
+      padding: 10px 15px;
+      margin: 5px;
+      background-color: #444;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #00ff99;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: black;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #00cc77;
+    }
+    #status {
+      margin-top: 15px;
+      font-size: 1.2em;
+      color: #ffcc00;
+    }
+  </style>
 </head>
-<body style="background-color: #111; color: white; text-align: center; padding: 50px;">
-  <h1>Blackjack</h1>
-  <p>Juego en desarrollo...</p>
-  <a href="index.html" style="color: gold;">Volver al inicio</a>
+<body>
+
+  <h1>Blackjack Interactivo</h1>
+
+  <h2>Tus Cartas</h2>
+  <div id="player-cards" class="cards"></div>
+  <p>Total: <span id="player-total">0</span></p>
+
+  <h2>Cartas del Crupier</h2>
+  <div id="dealer-cards" class="cards"></div>
+  <p>Total: <span id="dealer-total">0</span></p>
+
+  <div>
+    <button onclick="hit()">Pedir Carta</button>
+    <button onclick="stand()">Plantarse</button>
+    <button onclick="startGame()">Nueva Partida</button>
+  </div>
+
+  <div id="status"></div>
+
+  <script>
+    const suits = ['♠', '♥', '♦', '♣'];
+    const values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+
+    let deck = [];
+    let playerHand = [];
+    let dealerHand = [];
+    let gameOver = false;
+
+    function createDeck() {
+      deck = [];
+      for (let suit of suits) {
+        for (let value of values) {
+          deck.push({ value, suit });
+        }
+      }
+      shuffle(deck);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function startGame() {
+      gameOver = false;
+      createDeck();
+      playerHand = [drawCard(), drawCard()];
+      dealerHand = [drawCard(), drawCard()];
+      updateUI();
+      document.getElementById("status").textContent = '';
+    }
+
+    function drawCard() {
+      return deck.pop();
+    }
+
+    function getHandValue(hand) {
+      let value = 0;
+      let aces = 0;
+      for (let card of hand) {
+        if (['J', 'Q', 'K'].includes(card.value)) {
+          value += 10;
+        } else if (card.value === 'A') {
+          value += 11;
+          aces++;
+        } else {
+          value += parseInt(card.value);
+        }
+      }
+      while (value > 21 && aces > 0) {
+        value -= 10;
+        aces--;
+      }
+      return value;
+    }
+
+    function updateUI() {
+      displayCards(playerHand, 'player-cards');
+      displayCards(dealerHand, 'dealer-cards');
+      document.getElementById('player-total').textContent = getHandValue(playerHand);
+      document.getElementById('dealer-total').textContent = gameOver ? getHandValue(dealerHand) : '?';
+    }
+
+    function displayCards(hand, elementId) {
+      const container = document.getElementById(elementId);
+      container.innerHTML = '';
+      for (let card of hand) {
+        const cardDiv = document.createElement('div');
+        cardDiv.className = 'card';
+        cardDiv.textContent = card.value + card.suit;
+        container.appendChild(cardDiv);
+      }
+    }
+
+    function hit() {
+      if (gameOver) return;
+      playerHand.push(drawCard());
+      const total = getHandValue(playerHand);
+      updateUI();
+      if (total > 21) {
+        endGame("Te pasaste. Pierdes.");
+      }
+    }
+
+    function stand() {
+      if (gameOver) return;
+      while (getHandValue(dealerHand) < 17) {
+        dealerHand.push(drawCard());
+      }
+      const playerTotal = getHandValue(playerHand);
+      const dealerTotal = getHandValue(dealerHand);
+      let result = '';
+      if (dealerTotal > 21 || playerTotal > dealerTotal) {
+        result = "¡Ganaste!";
+      } else if (playerTotal < dealerTotal) {
+        result = "Perdiste.";
+      } else {
+        result = "Empate.";
+      }
+      endGame(result);
+    }
+
+    function endGame(message) {
+      gameOver = true;
+      updateUI();
+      document.getElementById("status").textContent = message;
+    }
+
+    startGame();
+  </script>
+
 </body>
 </html>
